@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
+/* ─── Design Tokens ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper:       #F4F1EA;
+  --paper-2:     #EDE8DD;
+  --ink:         #161513;
+  --ink-2:       #3a3733;
+  --ink-3:       #6b665d;
+  --ink-4:       #9a948a;
+  --rule:        #d9d3c5;
+  --rule-2:      #e6e1d4;
+  --accent:      oklch(0.62 0.12 45);
+  --accent-soft: oklch(0.92 0.04 60);
+  --accent-ink:  oklch(0.42 0.10 40);
+  --good:        oklch(0.62 0.10 150);
+  --warn:        oklch(0.72 0.13 75);
+  --danger:      oklch(0.58 0.18 25);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --paper:       #14130F;
+  --paper-2:     #1d1c17;
+  --ink:         #F0EBDF;
+  --ink-2:       #C8C2B3;
+  --ink-3:       #8d877a;
+  --ink-4:       #5e5a51;
+  --rule:        #2c2a24;
+  --rule-2:      #221f1a;
+  --accent:      oklch(0.72 0.12 45);
+  --accent-soft: oklch(0.32 0.06 50);
+  --accent-ink:  oklch(0.82 0.10 50);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  margin: 0;
 }
+
+/* ─── Hero rise animation ────────────────────────────────────── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(0.5em); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rise > * {
+  display: inline-block;
+  animation: riseIn 0.9s cubic-bezier(.2,.7,.2,1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise > * { animation: none; }
+}
+
+/* ─── Hover lift ─────────────────────────────────────────────── */
+.lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -16px rgba(20,18,15,.25);
+}
+
+/* ─── Custom cursor ──────────────────────────────────────────── */
+.cursor-dot {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--ink);
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px;
+  border: 1px solid var(--ink);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, border-color 0.2s;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring.expanded {
+  width: 60px;
+  height: 60px;
+  border-color: var(--accent);
+}
+
+/* ─── Scrollbar slim ─────────────────────────────────────────── */
+.scroll-slim::-webkit-scrollbar { width: 6px; height: 6px; }
+.scroll-slim::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+/* ─── Tiptap editor ──────────────────────────────────────────── */
+.tiptap { outline: none; }
+.tiptap p.is-editor-empty:first-child::before {
+  color: var(--ink-4);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ─── Underline link hover ───────────────────────────────────── */
+.link-hover {
+  position: relative;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.35s ease;
+  padding-bottom: 1px;
+}
+.link-hover:hover { background-size: 100% 1px; }
