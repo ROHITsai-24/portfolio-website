@@ -432,10 +432,12 @@ create policy "resume: owner write"
 -- ============================================================
 
 create or replace function handle_new_user()
-returns trigger language plpgsql security definer as $$
+returns trigger language plpgsql security definer
+set search_path = public
+as $$
 begin
   insert into profiles (user_id, email)
-  values (new.id, new.email)
+  values (new.id, coalesce(new.email, ''))
   on conflict (user_id) do nothing;
 
   insert into settings (user_id)
