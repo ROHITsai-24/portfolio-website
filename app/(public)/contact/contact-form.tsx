@@ -22,7 +22,7 @@ export function ContactForm() {
         body: JSON.stringify(values),
       })
       if (!res.ok) throw new Error()
-      toast.success('Message sent. I'll reply within 48 hours.')
+      toast.success("Message sent. I'll reply within 48 hours.")
       setValues({ name: '', email: '', subject: 'Project work', message: '', sendCopy: true })
     } catch {
       toast.error('Something went wrong. Try emailing me directly.')
